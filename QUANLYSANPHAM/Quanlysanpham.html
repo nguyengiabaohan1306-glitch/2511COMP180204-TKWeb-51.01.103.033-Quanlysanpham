@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Quản lý sản phẩm</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f4f4f4;
+    }
+    h2 {
+      color: #333;
+    }
+    .addbox {
+      background-color:lightblue;
+      border-radius: 8px;
+      padding: 20px;
+      width: 400px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 6px 12px;
+      margin-left: 5px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+    }
+    th, td {
+      border: none;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f5efef;
+    }
+    .delete-btn {
+      background-color: #dc3545;
+    }
+    .delete-btn:hover {
+      background-color: #a71d2a;
+    }
+
+    /*Màu ô xen kẽ chẵn lẻ*/
+    tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+    }
+    tbody tr:nth-child(even) {
+    background-color: #e9e9e9;
+    }
+
+  </style>
+</head>
+<body>
+  <h2>Add New Product</h2>
+  <div class="addbox">
+  <input type="text" id="newProduct" placeholder="New Product">
+  <button onclick="addProduct()">Add</button>
+  </div>
+
+  <h2>Display All Product</h2>
+  <div class="top-bar">
+    <span>Product Name</span>
+    <span id="total"></span>
+  </div>
+
+  <table>
+    <tbody id="productList"></tbody>
+  </table>
+
+  <script>
+    // Mảng chứa danh sách sản phẩm
+    let product_List = [
+      "Sony Xperia",
+      "Samsung Galaxy",
+      "Nokia 6",
+      "Xiaomi Redmi Note 4",
+      "Apple iPhone 6S",
+      "Xiaomi Mi 5s Plus",
+      "Apple iPhone 8 Plus",
+      "Fujitsu F-04E",
+      "Oppo A71"
+    ];
+
+    // Hiển thị danh sách sản phẩm
+    function showProducts() {
+      let list = "";
+      for (let i = 0; i < product_List.length; i++) {
+        list += `
+          <tr>
+            <td>${product_List[i]}</td>
+            <td>
+              <button onclick="editProduct(${i})">Edit</button>
+            </td>
+            <td>
+              <button class="delete-btn" onclick="deleteProduct(${i})">Delete</button>
+            </td>
+          </tr>
+        `;
+      }
+      document.getElementById("productList").innerHTML = list;
+      document.getElementById("total").innerText = product_List.length + " products";
+    }
+
+    // Thêm sản phẩm
+    function addProduct() {
+      let newP = document.getElementById("newProduct").value.trim();
+      if (newP === "") {
+        alert("Vui lòng nhập tên sản phẩm!");
+        return;
+      }
+      product_List.push(newP);
+      document.getElementById("newProduct").value = "";
+      showProducts();
+      alert("Đã thêm sản phẩm mới!");
+    }
+
+    // Sửa sản phẩm
+    function editProduct(index) {
+      let newName = prompt("Nhập tên mới cho sản phẩm:", product_List[index]);
+      if (newName !== null && newName.trim() !== "") {
+        product_List[index] = newName.trim();
+        showProducts();
+        alert("Đã cập nhật sản phẩm!");
+      }
+    }
+
+    // Xóa sản phẩm
+    function deleteProduct(index) {
+      if (confirm("Bạn có chắc muốn xóa sản phẩm này không?")) {
+        product_List.splice(index, 1);
+        showProducts();
+        alert("Đã xóa sản phẩm!");
+      }
+    }
+
+    // Hiển thị danh sách ban đầu
+    showProducts();
+  </script>
+</body>
+</html>
